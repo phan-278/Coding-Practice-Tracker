@@ -2,46 +2,82 @@ const loginForm = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("togglePassword");
-const submitBtn = document.querySelector(".form-btn--submit");
+const loginBtn = document.getElementById("loginBtn");
+const message = document.getElementById("message");
 
 // 👁 show / hide password
-togglePassword.addEventListener("click", function () {
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        togglePassword.textContent = "🙈";
-    } else {
-        passwordInput.type = "password";
-        togglePassword.textContent = "👁";
-    }
+togglePassword.addEventListener("click", () => {
+    const isPassword = passwordInput.type === "password";
+    passwordInput.type = isPassword ? "text" : "password";
+    togglePassword.textContent = isPassword ? "🙈" : "👁";
 });
 
 // 🚀 submit form
-loginForm.addEventListener("submit", function (e) {
+loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const emailValue = emailInput.value.trim();
-    const passwordValue = passwordInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-    if (emailValue === "" || passwordValue === "") {
-        alert("Vui lòng nhập đầy đủ thông tin!");
+    if (!email || !password) {
+        showMessage("Please fill in all fields.", "red");
         return;
     }
 
-    if (!emailValue.includes("@")) {
-        alert("Email chưa đúng định dạng!");
+    if (!email.includes("@")) {
+        showMessage("Invalid email format.", "red");
         return;
     }
 
-    // 👉 đổi nút thành loading
-    submitBtn.textContent = "Loading...";
-    submitBtn.disabled = true;
+    setLoading(true);
+    showMessage("", "");
 
-    // giả lập gọi server (2 giây)
-    setTimeout(() => {
-        alert("Đăng nhập thành công! (demo)");
+    try {
+        const response = await fetch("http://localhost:5000/api/v1/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-        // 👉 trả lại trạng thái ban đầu
-        submitBtn.textContent = "Sign In";
-        submitBtn.disabled = false;
-    }, 2000);
+        const data = await response.json();
+
+        if (!response.ok) {
+            showMessage(data.message || "Login failed.", "red");
+            return;
+        }
+
+        // lưu token + user
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        showMessage("Login successful! Redirecting...", "green");
+
+        setTimeout(() => {
+            window.location.href = "../app/dashboard.html";
+        }, 1200);
+    } catch (error) {
+        console.error("Login error:", error);
+        showMessage("Cannot connect to server.", "red");
+    } finally {
+        setLoading(false);
+    }
 });
+
+function setLoading(isLoading) {
+    if (isLoading) {
+        loginBtn.textContent = "Signing In...";
+        loginBtn.disabled = true;
+        loginBtn.style.opacity = "0.7";
+    } else {
+        loginBtn.textContent = "Sign In";
+        loginBtn.disabled = false;
+        loginBtn.style.opacity = "1";
+    }
+}
+
+function showMessage(text, color) {
+    message.textContent = text;
+    message.style.color = color;
+}

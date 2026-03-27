@@ -1,74 +1,80 @@
-// Bạn có thể import authService nếu đã viết file đó
-import { authService } from './authService.js';
-
 const registerForm = document.getElementById("registerForm");
+const fullNameInput = document.getElementById("fullname");
+const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 const togglePassword = document.getElementById("togglePassword");
-const submitBtn = document.querySelector(".form-btn--submit");
+const submitBtn = document.getElementById("registerBtn");
+const message = document.getElementById("message");
 
-/**
- * Xử lý ẩn/hiện mật khẩu
- */
 togglePassword.addEventListener("click", () => {
     const isPassword = passwordInput.type === "password";
     const newType = isPassword ? "text" : "password";
-    
+
     passwordInput.type = newType;
     confirmPasswordInput.type = newType;
     togglePassword.textContent = isPassword ? "🙈" : "👁";
 });
 
-/**
- * Xử lý gửi Form
- */
 registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Thu thập dữ liệu
-    const name = document.getElementById("fullname").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const pass = passwordInput.value;
-    const confirmPass = confirmPasswordInput.value;
+    const username = fullNameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
 
-    // 1. Validation cơ bản
-    if (!name || !email || !pass) {
-        alert("Vui lòng điền đầy đủ các thông tin bắt buộc!");
+    if (!username || !email || !password || !confirmPassword) {
+        showMessage("Please fill in all required fields.", "red");
         return;
     }
 
-    if (pass.length < 6) {
-        alert("Mật khẩu bảo mật phải có ít nhất 6 ký tự!");
+    if (password.length < 6) {
+        showMessage("Password must be at least 6 characters.", "red");
         return;
     }
 
-    if (pass !== confirmPass) {
-        alert("Xác nhận mật khẩu không trùng khớp. Vui lòng kiểm tra lại!");
+    if (password !== confirmPassword) {
+        showMessage("Confirm password does not match.", "red");
         return;
     }
 
-    // 2. Hiệu ứng giao diện khi đang gửi
     setLoading(true);
+    showMessage("", "");
 
     try {
-        // Giả lập gọi API đăng ký (Chỗ này sau này bạn sẽ dùng fetch hoặc axios)
-        await simulateRegisterAPI({ name, email, pass });
+        const response = await fetch("http://localhost:5000/api/v1/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+            }),
+        });
 
-        alert(`Tài khoản ${email} đã được tạo thành công!`);
-        
-        // Điều hướng về trang login sau khi đăng ký xong
-        window.location.href = "login.html";
+        const data = await response.json();
 
+        if (!response.ok) {
+            showMessage(data.message || "Register failed.", "red");
+            return;
+        }
+
+        showMessage("Register successful! Redirecting to login...", "green");
+
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 1500);
     } catch (error) {
-        alert("Đăng ký thất bại: " + error.message);
+        console.error("Register error:", error);
+        showMessage("Cannot connect to server.", "red");
     } finally {
         setLoading(false);
     }
 });
 
-/**
- * Hàm hỗ trợ thay đổi trạng thái nút bấm
- */
 function setLoading(isLoading) {
     if (isLoading) {
         submitBtn.textContent = "Creating Account...";
@@ -81,15 +87,7 @@ function setLoading(isLoading) {
     }
 }
 
-/**
- * Hàm giả lập gọi server
- */
-function simulateRegisterAPI(data) {
-    return new Promise((resolve, reject) => {
-        console.log("Gửi dữ liệu lên Server:", data);
-        setTimeout(() => {
-            // Giả lập thành công
-            resolve({ status: 200, message: "Success" });
-        }, 2000);
-    });
+function showMessage(text, color) {
+    message.textContent = text;
+    message.style.color = color;
 }

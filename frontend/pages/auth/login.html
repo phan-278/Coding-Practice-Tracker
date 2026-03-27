@@ -11,17 +11,12 @@
 
     <div class="container">
 
-        <!-- Left Side -->
         <div class="form-container left-side">
             <div class="form-blob">
-                <!-- <img src="assets/images/blob.svg" alt="blob" class="blob-image blob-image--1">
-                <img src="assets/images/blob.svg" alt="blob" class="blob-image blob-image--2">
-                <img src="assets/images/blob.svg" alt="blob" class="blob-image blob-image--3"> -->
-                <img src="../../assets/images/illustration.svg" class="left-image">
+                <img src="../../assets/images/illustration.svg" class="left-image" alt="illustration">
             </div>
         </div>
 
-        <!-- Right Side -->
         <div class="form-container right-side">
             <p>Please enter your details to login to your account</p>
             <h1>Welcome Back!</h1>
@@ -49,7 +44,8 @@
                     </div>
                 </div>
 
-                <button type="submit" class="form-btn form-btn--submit">Sign In</button>
+                <button type="submit" class="form-btn form-btn--submit" id="loginBtn">Sign In</button>
+                <p id="message"></p>
             </form>
 
             <div class="form-divider">
@@ -79,6 +75,7 @@
         </div>
 
     </div>
-<script src="../../assets/js/auth/login.js"></script>
+
+    <script type="module" src="../../assets/js/auth/login.js"></script>
 </body>
 </html>
