@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Ludiflex</title>
+
+  <link rel="stylesheet" href="../../assets/css/global.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="sidebar__logo-mark">L</div>
+      <span class="sidebar__logo-name">Ludiflex</span>
+    </div>
+
+    <nav class="sidebar__nav">
+      <span class="nav-section-label">Main</span>
+
+      <a href="dashboard.html" class="nav-item active">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+
+      <a href="problems.html" class="nav-item">
+        <span class="nav-icon">🧩</span> Problems
+      </a>
+
+      <span class="nav-section-label">Account</span>
+
+      <a href="profile.html" class="nav-item">
+        <span class="nav-icon">👤</span> Profile
+      </a>
+
+      <a href="#" class="nav-item" id="settingsBtn">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__user">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarName">Loading...</div>
+          <div class="user-role">Member</div>
+        </div>
+        <button class="sidebar__logout" id="logoutBtn" title="Log out">↩</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <span class="topbar__title">Dashboard</span>
+      <div class="topbar__search">
+        <span>🔍</span>
+        <input type="text" placeholder="Search problems..." />
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- Stats -->
+      <div class="stats-grid fade-up">
+        <div class="card card--glow fade-up-1">
+          <div class="card__icon">🏆</div>
+          <div class="card__label">Total Solved</div>
+          <div class="card__value stat-accent" id="statTotal">—</div>
+          <div class="card__sub">across all platforms</div>
+        </div>
+
+        <div class="card card--glow fade-up-2">
+          <div class="card__icon">🔥</div>
+          <div class="card__label">Current Streak</div>
+          <div class="card__value stat-warn" id="statStreak">—</div>
+          <div class="card__sub">days in a row</div>
+        </div>
+
+        <div class="card card--glow fade-up-3">
+          <div class="card__icon">📅</div>
+          <div class="card__label">This Week</div>
+          <div class="card__value stat-info" id="statWeek">—</div>
+          <div class="card__sub">problems solved</div>
+        </div>
+
+        <div class="card card--glow fade-up-4">
+          <div class="card__icon">⚡</div>
+          <div class="card__label">Acceptance Rate</div>
+          <div class="card__value stat-danger" id="statRate">—</div>
+          <div class="card__sub">first-try success</div>
+        </div>
+      </div>
+
+      <!-- Heatmap + Difficulty -->
+      <div class="two-col" style="margin-bottom:20px;">
+        <div class="card fade-up fade-up-1">
+          <div class="section-header">
+            <span class="section-title">Activity Heatmap</span>
+            <span class="card__sub" id="heatmapYear">2025</span>
+          </div>
+          <div class="heatmap-grid" id="heatmapGrid"></div>
+          <div class="heatmap-legend">
+            Less
+            <div class="heatmap-cell"></div>
+            <div class="heatmap-cell" data-level="1"></div>
+            <div class="heatmap-cell" data-level="2"></div>
+            <div class="heatmap-cell" data-level="3"></div>
+            <div class="heatmap-cell" data-level="4"></div>
+            More
+          </div>
+        </div>
+
+        <div class="card fade-up fade-up-2">
+          <div class="section-header">
+            <span class="section-title">Difficulty Breakdown</span>
+          </div>
+
+          <div style="display:flex; gap:24px; align-items:center; margin-top:8px;">
+            <div class="ring-chart-wrap">
+              <svg width="130" height="130" viewBox="0 0 130 130">
+                <circle class="ring-bg" cx="65" cy="65" r="55"></circle>
+                <circle
+                  class="ring-easy"
+                  cx="65"
+                  cy="65"
+                  r="55"
+                  id="ringEasy"
+                  stroke-dasharray="345.4"
+                  stroke-dashoffset="345.4"
+                ></circle>
+              </svg>
+              <div class="ring-label">
+                <span class="ring-label-num stat-accent" id="ringTotal">0</span>
+                <span class="ring-label-sub">solved</span>
+              </div>
+            </div>
+
+            <div class="diff-breakdown">
+              <div class="diff-row">
+                <div class="diff-row-header">
+                  <span class="diff-label">Easy</span>
+                  <span class="diff-val stat-accent" id="valEasy">0</span>
+                </div>
+                <div class="diff-bar-track">
+                  <div class="diff-bar easy" id="barEasy" style="width:0%"></div>
+                </div>
+              </div>
+
+              <div class="diff-row">
+                <div class="diff-row-header">
+                  <span class="diff-label">Medium</span>
+                  <span class="diff-val stat-warn" id="valMedium">0</span>
+                </div>
+                <div class="diff-bar-track">
+                  <div class="diff-bar medium" id="barMedium" style="width:0%"></div>
+                </div>
+              </div>
+
+              <div class="diff-row">
+                <div class="diff-row-header">
+                  <span class="diff-label">Hard</span>
+                  <span class="diff-val stat-danger" id="valHard">0</span>
+                </div>
+                <div class="diff-bar-track">
+                  <div class="diff-bar hard" id="barHard" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="card fade-up">
+        <div class="section-header">
+          <span class="section-title">Recent Activity</span>
+          <a href="problems.html" class="section-action">View all →</a>
+        </div>
+
+        <div class="activity-list" id="activityList">
+          <div style="color:var(--text-muted); font-size:13px; text-align:center; padding:24px 0;">
+            Loading activity...
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module" src="../../assets/js/global.js"></script>
+  <script type="module" src="../../assets/js/app/dashboard.js"></script>
+</body>
+</html>
