@@ -1,0 +1,223 @@
+/* Tone màu lấy từ INTRO10.jpg */
+:root {
+  --bg-cream: #F2EBE1; /* Nền kem sáng */
+  --bg-darker: #E5DCCF; /* Nền kem đậm */
+  --text-red: #A42525;  /* Chữ "Kép" màu đỏ đô */
+  --text-dark: #2D2A26; /* Chữ xám đen để dễ đọc */
+  --border-color: rgba(164, 37, 37, 0.2);
+  --sidebar-width: 260px;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --ease: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+}
+
+/* SIDEBAR MỚI (Chữ ngang, dễ đọc) */
+.sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--bg-cream);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 40px 30px;
+  z-index: 100;
+}
+
+.brand-logo-img {
+  width: 100%;
+  max-width: 150px;
+  margin-bottom: 60px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex-grow: 1;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: color 0.3s;
+}
+.nav-link:hover { color: var(--text-red); }
+.booking-highlight {
+  color: var(--text-red);
+  font-weight: 600;
+  border-left: 2px solid var(--text-red);
+  padding-left: 10px;
+}
+
+.sidebar-footer {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  margin-left: var(--sidebar-width);
+}
+
+/* HERO SLIDER (Sửa lỗi nhòe ảnh, thêm nút) */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  /* Đã bỏ transform scale() để không bị nhòe ảnh */
+  transition: opacity 0.8s ease-in-out;
+}
+.hero-slide.active { opacity: 1; }
+
+.hero-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(242, 235, 225, 0.85); /* Nền mờ tôn chữ */
+  padding: 40px 60px;
+  border: 1px solid var(--text-red);
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  color: var(--text-red);
+}
+
+/* NÚT CHUYỂN SLIDE */
+.slide-controls {
+  position: absolute;
+  bottom: 40px; right: 40px;
+  display: flex; gap: 10px;
+  z-index: 10;
+}
+.slide-controls button {
+  width: 50px; height: 50px;
+  background: var(--bg-cream);
+  border: 1px solid var(--text-red);
+  color: var(--text-red);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.slide-controls button:hover {
+  background: var(--text-red);
+  color: white;
+}
+
+/* STUDIO GRID (Ảnh tỷ lệ thật) */
+.studio-section { padding: 80px; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--text-red);
+  margin-bottom: 40px;
+}
+.studio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.studio-item img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover; /* Giúp ảnh không bị méo */
+  border-radius: 4px;
+}
+
+/* BOOKING SECTION & CALENDAR */
+.booking-section {
+  padding: 80px;
+  background-color: var(--bg-darker);
+}
+.booking-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 60px;
+}
+
+/* Giao diện Calendar Nhỏ */
+.calendar-grid {
+  margin-top: 20px;
+  display: flex; gap: 15px;
+}
+.cal-day {
+  background: var(--bg-cream);
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  flex: 1;
+}
+.cal-day strong { display: block; margin-bottom: 10px; color: var(--text-red); }
+.slot {
+  display: block; padding: 5px 10px; margin-bottom: 5px;
+  font-size: 0.85rem; border-radius: 3px;
+}
+.slot.booked { background: #dcd0c0; color: #888; text-decoration: line-through; }
+.slot.free { background: rgba(164, 37, 37, 0.1); color: var(--text-red); font-weight: 500;}
+.waitlist-hint { font-size: 0.75rem; color: #888; }
+
+/* Form Booking */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group { margin-bottom: 20px; }
+label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); font-size: 0.9rem;}
+input, select {
+  width: 100%; padding: 12px;
+  border: 1px solid #ccc;
+  background: var(--bg-cream);
+  font-family: var(--font-body);
+}
+input:focus, select:focus { outline: none; border-color: var(--text-red); }
+.checkbox-group { display: flex; align-items: center; gap: 10px; font-size: 0.9rem;}
+
+/* Khung Tóm tắt Script (Mô phỏng tin nhắn) */
+.summary-box {
+  background: white;
+  padding: 20px;
+  border-left: 4px solid var(--text-red);
+  margin: 20px 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.summary-box h4 { margin-bottom: 10px; color: var(--text-red); }
+.notes { font-size: 0.8rem; color: #666; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;}
+
+.submit-btn {
+  background: var(--text-red);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  width: 100%;
+}
+.submit-btn:hover { background: #821c1c; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar { width: 100%; height: auto; position: static; padding: 20px; border-right: none; border-bottom: 1px solid var(--border-color); }
+  .brand-logo-img { margin-bottom: 20px; max-width: 100px; }
+  .sidebar-nav { flex-direction: row; flex-wrap: wrap; }
+  .main-content { margin-left: 0; }
+  .booking-inner { grid-template-columns: 1fr; }
+  .hero-title { font-size: 3rem; }
+}

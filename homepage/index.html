@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kép — Studio for Rent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-inner"></div>
+  </div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-quote">"</span>
+      <span class="brand-name">Kép</span>
+      <span class="brand-quote closing">"</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#intro" class="nav-link" data-label="01">Intro</a>
+      <a href="#studio" class="nav-link" data-label="02">Studio</a>
+      <a href="#zones" class="nav-link" data-label="03">Zones</a>
+      <a href="#booking" class="nav-link" data-label="04">Đặt lịch</a>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="sidebar-tag">HCMC · VN</span>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- HERO / INTRO SECTION -->
+    <section class="hero" id="intro">
+      <div class="hero-slides">
+        <div class="hero-slide active" style="background-image: url('KepDaSpace/INTRO.jpg')"></div>
+        <div class="hero-slide" style="background-image: url('KepDaSpace/intro1.jpg')"></div>
+        <div class="hero-slide" style="background-image: url('KepDaSpace/intro2.jpg')"></div>
+        <div class="hero-slide" style="background-image: url('KepDaSpace/intro3.jpg')"></div>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="hero-label reveal-up">CREATIVE STUDIO · FOR RENT</div>
+        <h1 class="hero-title reveal-up">
+          <span class="title-quote">"</span>Kép<span class="title-quote closing">"</span>
+        </h1>
+        <p class="hero-sub reveal-up">Không gian sáng tạo · Chụp ảnh · Quay phim · Sự kiện</p>
+        <a href="#booking" class="hero-cta reveal-up">Đặt Lịch Ngay →</a>
+      </div>
+      <div class="hero-scroll-indicator">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+      <div class="slide-counter">
+        <span id="currentSlide">01</span>
+        <span class="divider">/</span>
+        <span>04</span>
+      </div>
+    </section>
+
+    <!-- TAGLINE MARQUEE -->
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp; Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
+        <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp; Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- STUDIO SECTION -->
+    <section class="studio-section" id="studio">
+      <div class="section-header reveal-up">
+        <div class="section-number">02</div>
+        <h2 class="section-title">Studio Space</h2>
+        <p class="section-desc">Không gian công nghiệp thô mộc, ánh sáng tự nhiên dồi dào — nền hoàn hảo cho mọi concept sáng tạo.</p>
+      </div>
+
+      <div class="studio-grid">
+        <div class="studio-card large reveal-up" data-index="0">
+          <div class="card-img" style="background-image: url('KepDaSpace/studio2.jpg')"></div>
+          <div class="card-info">
+            <span class="card-tag">Main Hall · Floor 2</span>
+            <span class="card-area">~80 m²</span>
+          </div>
+        </div>
+        <div class="studio-card reveal-up" data-index="1">
+          <div class="card-img" style="background-image: url('KepDaSpace/studio7.jpg')"></div>
+          <div class="card-info">
+            <span class="card-tag">Makeup Zone</span>
+            <span class="card-area">3 gương · Bàn trang điểm</span>
+          </div>
+        </div>
+        <div class="studio-card reveal-up" data-index="2">
+          <div class="card-img" style="background-image: url('KepDaSpace/studio4.jpg')"></div>
+          <div class="card-info">
+            <span class="card-tag">Night Mode</span>
+            <span class="card-area">Đèn spotlight</span>
+          </div>
+        </div>
+        <div class="studio-card reveal-up" data-index="3">
+          <div class="card-img" style="background-image: url('KepDaSpace/studio1.jpg')"></div>
+          <div class="card-info">
+            <span class="card-tag">Staircase · Iconic</span>
+            <span class="card-area">Floor 2 → 3</span>
+          </div>
+        </div>
+        <div class="studio-card reveal-up" data-index="4">
+          <div class="card-img" style="background-image: url('KepDaSpace/studio5.jpg')"></div>
+          <div class="card-info">
+            <span class="card-tag">Changing Room</span>
+            <span class="card-area">Rèm riêng tư</span>
+          </div>
+        </div>
+        <div class="studio-card reveal-up" data-index="5">
+          <div class="card-img" style="background-image: url('KepDaSpace/studio3.jpg')"></div>
+          <div class="card-info">
+            <span class="card-tag">Detail Corner</span>
+            <span class="card-area">Natural light</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ZONES SECTION -->
+    <section class="zones-section" id="zones">
+      <div class="section-header reveal-up">
+        <div class="section-number">03</div>
+        <h2 class="section-title">Các Khu Vực</h2>
+      </div>
+
+      <div class="zones-grid">
+        <div class="zone-item reveal-up">
+          <div class="zone-number">2F</div>
+          <div class="zone-body">
+            <h3>TO² · ZONE</h3>
+            <p>Sảnh chính rộng với cột bê tông, rèm trắng lớn, ánh sáng tự nhiên từ cửa sổ vòm. Phù hợp cho fashion, editorial, sự kiện nhỏ.</p>
+            <ul>
+              <li>Diện tích ~80m²</li>
+              <li>Điện 3 pha</li>
+              <li>Máy lạnh</li>
+              <li>Wifi tốc độ cao</li>
+            </ul>
+          </div>
+        </div>
+        <div class="zone-item reveal-up">
+          <div class="zone-number">3F</div>
+          <div class="zone-body">
+            <h3>TO³ · ZONE</h3>
+            <p>Tầng thượng private với bàn makeup 3 gương, phòng thay đồ riêng, rèm lụa mờ. Không gian lý tưởng cho beauty, portrait và concept.</p>
+            <ul>
+              <li>Makeup zone 3 gương</li>
+              <li>Khu thay đồ riêng</li>
+              <li>Cầu thang biểu tượng đỏ</li>
+              <li>Ánh sáng tự nhiên</li>
+            </ul>
+          </div>
+        </div>
+        <div class="zone-item reveal-up">
+          <div class="zone-number">✦</div>
+          <div class="zone-body">
+            <h3>FULL HOUSE</h3>
+            <p>Thuê trọn 2 tầng cho production lớn, workshop, pop-up event hoặc buổi chụp thương mại toàn ngày.</p>
+            <ul>
+              <li>Cả 2 tầng</li>
+              <li>Ưu tiên giờ cao điểm</li>
+              <li>Support setup</li>
+              <li>Giá thương lượng</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKING SECTION -->
+    <section class="booking-section" id="booking">
+      <div class="booking-inner">
+        <div class="booking-left reveal-up">
+          <div class="section-number">04</div>
+          <h2 class="section-title">Đặt Lịch</h2>
+          <p>Chọn không gian, thời gian và chúng tôi sẽ xác nhận trong vòng 2 giờ.</p>
+          <div class="contact-info">
+            <a href="tel:+84" class="contact-line">☎ Liên hệ tư vấn</a>
+            <a href="https://instagram.com" class="contact-line">◈ @kep.space</a>
+          </div>
+        </div>
+        <div class="booking-form reveal-up">
+          <div class="form-group">
+            <label>Khu vực</label>
+            <div class="select-wrap">
+              <select id="zone">
+                <option value="">Chọn zone</option>
+                <option>2F · TO² ZONE (~80m²)</option>
+                <option>3F · TO³ ZONE (Makeup + Studio)</option>
+                <option>Full House (2 tầng)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ngày</label>
+              <input type="date" id="bookDate" />
+            </div>
+            <div class="form-group">
+              <label>Giờ bắt đầu</label>
+              <div class="select-wrap">
+                <select id="startTime">
+                  <option>08:00</option><option>09:00</option><option>10:00</option>
+                  <option>11:00</option><option>12:00</option><option>13:00</option>
+                  <option>14:00</option><option>15:00</option><option>16:00</option>
+                  <option>17:00</option><option>18:00</option><option>19:00</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Số giờ</label>
+              <div class="select-wrap">
+                <select id="hours">
+                  <option>2 giờ</option><option>3 giờ</option><option>4 giờ</option>
+                  <option>5 giờ</option><option>6 giờ</option><option>Cả ngày</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mục đích sử dụng</label>
+            <div class="purpose-tags">
+              <button class="tag-btn" onclick="toggleTag(this)">Photography</button>
+              <button class="tag-btn" onclick="toggleTag(this)">Videography</button>
+              <button class="tag-btn" onclick="toggleTag(this)">Fashion</button>
+              <button class="tag-btn" onclick="toggleTag(this)">Beauty / Makeup</button>
+              <button class="tag-btn" onclick="toggleTag(this)">Event / Workshop</button>
+              <button class="tag-btn" onclick="toggleTag(this)">Khác</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Ghi chú</label>
+            <textarea placeholder="Số người, yêu cầu đặc biệt, thiết bị cần thuê thêm..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại / Zalo</label>
+            <input type="tel" placeholder="0xxx xxx xxx" />
+          </div>
+          <button class="submit-btn" onclick="submitBooking()">
+            <span>Gửi Yêu Cầu Đặt Lịch</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-brand">
+        <span class="footer-quote">"</span>Kép<span class="footer-quote">"</span>
+      </div>
+      <div class="footer-meta">
+        <span>Creative Studio · Ho Chi Minh City</span>
+        <span>© 2025 Kép Studio. All rights reserved.</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- BOOKING SUCCESS MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-icon">✓</div>
+      <h3>Đã nhận yêu cầu!</h3>
+      <p>Chúng tôi sẽ liên hệ xác nhận trong vòng <strong>2 giờ</strong>. Cảm ơn bạn đã chọn Kép Studio.</p>
+      <button onclick="closeModal()">Đóng</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
