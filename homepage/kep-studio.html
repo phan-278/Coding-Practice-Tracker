@@ -5,40 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kép — Studio for Rent</title>
 
-  <!-- Fonts:
-       Cormorant SC  → closest free match to Edinburgh (high-contrast display serif)
-       Be Vietnam Pro → full Vietnamese diacritics, no broken characters
-       DM Serif Display → section headings
+  <!-- 
+    INTRO10.jpg logo uses a high-contrast editorial serif — Playfair Display matches it closely.
+    Cormorant SC → backup brand serif
+    Be Vietnam Pro → full Vietnamese diacritics
+    DM Serif Display → section headings
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- ── Custom Cursor ── -->
-<div class="cursor"    id="cursor"></div>
-<div class="cursor-dot" id="cursorDot"></div>
-
 <!-- ══════════════════════════════════
-     SIDEBAR  (3 nav items only)
+     SIDEBAR (collapsible)
 ══════════════════════════════════ -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <a class="brand" href="#about">
-    <span class="brand-kep">Kép</span>
+    <span class="brand-kep kep-font">"Kép"</span>
     <span class="brand-sub">Da Space · HCMC</span>
   </a>
 
   <nav class="sidebar-nav">
-    <a href="#about"   class="nav-link active"><span class="nav-num">01</span> About Us</a>
-    <a href="#zone"    class="nav-link"><span class="nav-num">02</span> Zone</a>
-    <a href="#booking" class="nav-link"><span class="nav-num">03</span> Đặt Lịch</a>
+    <a href="#about"   class="nav-link active"><span class="nav-num">01</span><span class="nav-label"> About Us</span></a>
+    <a href="#zone"    class="nav-link"><span class="nav-num">02</span><span class="nav-label"> Zone</span></a>
+    <a href="#booking" class="nav-link"><span class="nav-num">03</span><span class="nav-label"> Đặt Lịch</span></a>
   </nav>
 
   <div class="sidebar-foot">
-    <button class="admin-btn" onclick="openLogin()">⊞ Admin</button>
+    <button class="admin-btn" onclick="openLogin()"><span class="admin-icon">⊞</span><span class="admin-label"> Admin</span></button>
+    <button class="user-btn" onclick="openAuthModal('login')"><span class="admin-icon">◎</span><span class="admin-label"> Đăng nhập</span></button>
     <span class="copy">© 2025 Kép Studio</span>
   </div>
 </aside>
@@ -51,10 +49,10 @@
   <!-- ── HERO / ABOUT US ── -->
   <section id="about" class="hero">
     <div class="hero-slides">
-      <div class="slide active" style="background-image:url('KepDaSpace/INTRO.jpg')"></div>
-      <div class="slide"        style="background-image:url('KepDaSpace/intro1.jpg')"></div>
-      <div class="slide"        style="background-image:url('KepDaSpace/intro2.jpg')"></div>
-      <div class="slide"        style="background-image:url('KepDaSpace/intro3.jpg')"></div>
+      <div class="slide active" style="background-image:url('KepDaSpace/intro7.jpg')"></div>
+      <div class="slide"        style="background-image:url('KepDaSpace/intro4.jpg')"></div>
+      <div class="slide"        style="background-image:url('KepDaSpace/intro5.jpg')"></div>
+      <div class="slide"        style="background-image:url('KepDaSpace/intro6.jpg')"></div>
     </div>
     <div class="hero-overlay"></div>
 
@@ -90,34 +88,25 @@
     </div>
     <div class="studio-grid">
       <div class="studio-card large reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/studio6.jpg')"></div>
+        <div class="card-img" style="background-image:url('KepDaSpace/intro5.jpg')"></div>
         <div class="card-info"><span class="card-tag">Main Hall · 2F</span><span class="card-area">~80 m²</span></div>
       </div>
       <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/studio4.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Makeup Zone</span><span class="card-area">3 gương</span></div>
+        <div class="card-img" style="background-image:url('KepDaSpace/intro4.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Interior Space</span><span class="card-area">Natural Light</span></div>
       </div>
       <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/studio1.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Night Mode</span><span class="card-area">Spotlight</span></div>
+        <div class="card-img" style="background-image:url('KepDaSpace/intro6.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Exterior View</span><span class="card-area">Garden</span></div>
       </div>
       <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/studio5.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Staircase · Iconic</span><span class="card-area">1F → 2F</span></div>
-      </div>
-      <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/studio2.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Changing Room</span><span class="card-area">Rèm riêng tư</span></div>
-      </div>
-      <div class="studio-card span2 reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/studio3.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Detail Corner</span><span class="card-area">Natural light</span></div>
+        <div class="card-img" style="background-image:url('KepDaSpace/intro7.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Entrance · Iconic</span><span class="card-area">Brand Sign</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ══ ZONE SECTION ══
-       Clicking a zone card opens an image lightbox for that floor -->
+  <!-- ══ ZONE SECTION ══ -->
   <section class="section-wrap alt" id="zone">
     <div class="section-header reveal-up">
       <p class="eyebrow">Các Khu Vực</p>
@@ -128,7 +117,9 @@
     <div class="zones-grid">
       <!-- O Zone -->
       <div class="zone-card reveal-up" onclick="openZoneLightbox('O')">
-        <div class="zone-preview" style="background-image:url('KepDaSpace/studio1.jpg')"></div>
+        <div class="zone-preview zone-preview-empty">
+          <div class="zone-preview-label kep-font">"O" Zone</div>
+        </div>
         <div class="zone-body">
           <div class="zone-num">1F</div>
           <h3 class="zone-name kep-font">"O" Zone</h3>
@@ -144,7 +135,9 @@
 
       <!-- C Zone -->
       <div class="zone-card reveal-up" onclick="openZoneLightbox('C')">
-        <div class="zone-preview" style="background-image:url('KepDaSpace/studio4.jpg')"></div>
+        <div class="zone-preview zone-preview-empty">
+          <div class="zone-preview-label kep-font">"C" Zone</div>
+        </div>
         <div class="zone-body">
           <div class="zone-num">2F</div>
           <h3 class="zone-name kep-font">"C" Zone</h3>
@@ -160,7 +153,9 @@
 
       <!-- Full House -->
       <div class="zone-card reveal-up" onclick="openZoneLightbox('Full')">
-        <div class="zone-preview" style="background-image:url('KepDaSpace/studio6.jpg')"></div>
+        <div class="zone-preview zone-preview-empty">
+          <div class="zone-preview-label kep-font">Full House</div>
+        </div>
         <div class="zone-body">
           <div class="zone-num">✦</div>
           <h3 class="zone-name kep-font">Full House</h3>
@@ -187,7 +182,6 @@
 
       <!-- ── LEFT: Calendar Panel ── -->
       <div class="cal-panel reveal-up">
-        <!-- Mini month calendar (select date) -->
         <div class="mini-cal">
           <div class="cal-header">
             <button class="cal-nav-btn" onclick="calPrev()">←</button>
@@ -198,26 +192,22 @@
           <div class="cal-days"     id="calDays"></div>
         </div>
 
-        <!-- Zone tabs for timeline -->
         <div class="timeline-zone-tabs">
           <button class="tz-tab active" data-zone="O" onclick="switchTimelineZone('O',this)">O Zone · 1F</button>
           <button class="tz-tab" data-zone="C" onclick="switchTimelineZone('C',this)">C Zone · 2F</button>
           <button class="tz-tab" data-zone="Full" onclick="switchTimelineZone('Full',this)">Full House</button>
         </div>
 
-        <!-- Hourly timeline for selected date -->
         <div class="timeline-wrap" id="timelineWrap">
           <div class="timeline-label">Chọn một ngày để xem lịch theo giờ</div>
         </div>
 
-        <!-- Legend -->
         <div class="cal-legend">
           <div class="legend-item"><span class="dot dot-avail"></span> Còn trống</div>
           <div class="legend-item"><span class="dot dot-pending"></span> Đang chờ</div>
           <div class="legend-item"><span class="dot dot-confirmed"></span> Đã xác nhận</div>
         </div>
 
-        <!-- Notes -->
         <div class="cal-notes">
           <p>✦ OT tính trọn giờ — không tính 30/45 phút</p>
           <p>✦ Đặt cọc 50% trong 24h để giữ lịch</p>
@@ -227,7 +217,6 @@
 
       <!-- ── RIGHT: Booking Form ── -->
       <div class="form-panel reveal-up">
-        <!-- Step indicator -->
         <div class="steps-bar">
           <div class="step-item active" id="sp1"><span class="step-num">1</span><span class="step-lbl">Zone</span></div>
           <div class="step-divider"></div>
@@ -240,7 +229,7 @@
           <div class="step-item" id="sp5"><span class="step-num">5</span><span class="step-lbl">Xác Nhận</span></div>
         </div>
 
-        <!-- STEP 1: Choose Zone -->
+        <!-- STEP 1 -->
         <div class="form-step active" id="fs1">
           <h3 class="step-title">Chọn khu vực</h3>
           <div class="zone-radio-group">
@@ -286,7 +275,7 @@
           </div>
         </div>
 
-        <!-- STEP 2: Date & Time -->
+        <!-- STEP 2 -->
         <div class="form-step" id="fs2">
           <h3 class="step-title">Chọn ngày & giờ</h3>
           <div class="form-group">
@@ -321,22 +310,17 @@
               </div>
             </div>
           </div>
-
-          <!-- Duration info -->
           <div class="duration-info" id="durationInfo" style="display:none"></div>
-
-          <!-- Conflict warning -->
           <div class="conflict-warn" id="conflictWarn" style="display:none">
             ⚠ Khung giờ này đã có lịch. Vui lòng chọn khung giờ khác.
           </div>
-
           <div class="form-nav">
             <button type="button" class="btn-prev" onclick="goStep(1)">← Quay lại</button>
             <button type="button" class="btn-next" onclick="goStep(3)">Tiếp Theo →</button>
           </div>
         </div>
 
-        <!-- STEP 3: Equipment -->
+        <!-- STEP 3 -->
         <div class="form-step" id="fs3">
           <h3 class="step-title">Thiết bị thuê thêm <span style="opacity:.5;font-size:.8em;">(tuỳ chọn)</span></h3>
           <div class="equip-list">
@@ -372,7 +356,7 @@
           </div>
         </div>
 
-        <!-- STEP 4: Contact Info -->
+        <!-- STEP 4 -->
         <div class="form-step" id="fs4">
           <h3 class="step-title">Thông tin liên hệ</h3>
           <div class="form-row">
@@ -395,7 +379,7 @@
           </div>
         </div>
 
-        <!-- STEP 5: Summary & Confirm -->
+        <!-- STEP 5 -->
         <div class="form-step" id="fs5">
           <h3 class="step-title">Xác nhận đặt lịch</h3>
           <div class="summary-box" id="summaryBox"></div>
@@ -404,8 +388,8 @@
             <button type="button" class="btn-submit" onclick="submitBooking()">Xác Nhận & Đặt Lịch ✦</button>
           </div>
         </div>
-      </div><!-- /form-panel -->
-    </div><!-- /booking-layout -->
+      </div>
+    </div>
   </section>
 
   <!-- ── FOOTER ── -->
@@ -416,14 +400,14 @@
       <span>© 2025 Kép Studio. All rights reserved.</span>
     </div>
   </footer>
-</main><!-- /main -->
+</main>
 
 
 <!-- ══════════════════════════════════
      MODALS
 ══════════════════════════════════ -->
 
-<!-- Zone Lightbox: shows images of O Zone / C Zone / Full House -->
+<!-- Zone Lightbox -->
 <div class="modal-overlay" id="zoneLightbox" onclick="closeModal('zoneLightbox')">
   <div class="lightbox-box" onclick="event.stopPropagation()">
     <button class="lightbox-close" onclick="closeModal('zoneLightbox')">✕</button>
@@ -434,7 +418,7 @@
   </div>
 </div>
 
-<!-- QR Payment Modal (shown after booking confirmed) -->
+<!-- QR Payment Modal -->
 <div class="modal-overlay" id="qrModal">
   <div class="modal-box qr-modal-box">
     <div class="qr-status-icon">✓</div>
@@ -472,9 +456,66 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     ADMIN PANEL
-══════════════════════════════════ -->
+<!-- ══ AUTH MODAL (Guest Login / Register) ══ -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box auth-box" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeModal('authModal')">✕</button>
+
+    <!-- Tab switcher -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Đăng nhập</button>
+      <button class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Đăng ký</button>
+    </div>
+
+    <!-- Login form -->
+    <div class="auth-form" id="authFormLogin">
+      <h3 class="modal-title kep-font" style="text-align:left;font-size:1.3rem;margin-bottom:16px;">Chào mừng trở lại</h3>
+      <p class="auth-error" id="authLoginError" style="display:none"></p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="email@example.com"/>
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <input type="password" id="loginPassword" placeholder="••••••••"
+               onkeydown="if(event.key==='Enter') doLogin()"/>
+      </div>
+      <div class="form-nav" style="margin-top:12px;">
+        <button type="button" class="btn-next" onclick="doLogin()">Đăng nhập →</button>
+      </div>
+    </div>
+
+    <!-- Register form -->
+    <div class="auth-form" id="authFormRegister" style="display:none">
+      <h3 class="modal-title kep-font" style="text-align:left;font-size:1.3rem;margin-bottom:16px;">Tạo tài khoản</h3>
+      <p class="auth-error" id="authRegError" style="display:none"></p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Họ tên *</label>
+          <input type="text" id="regName" placeholder="Nguyễn Văn A"/>
+        </div>
+        <div class="form-group">
+          <label>SĐT *</label>
+          <input type="tel" id="regPhone" placeholder="0xxx xxx xxx"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" id="regEmail" placeholder="email@example.com"/>
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu *</label>
+        <input type="password" id="regPassword" placeholder="Tối thiểu 6 ký tự"
+               onkeydown="if(event.key==='Enter') doRegister()"/>
+      </div>
+      <div class="form-nav" style="margin-top:12px;">
+        <button type="button" class="btn-next" onclick="doRegister()">Đăng ký →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL ══ -->
 <div id="adminPanel" class="admin-panel">
   <div class="admin-header">
     <span class="admin-title kep-font">"Kép" Admin</span>
@@ -482,14 +523,12 @@
   </div>
   <div class="admin-body">
     <div class="admin-stats" id="adminStats"></div>
-
     <div class="admin-filters">
       <button class="filter-btn active" onclick="filterBookings('all',this)">Tất cả</button>
       <button class="filter-btn" onclick="filterBookings('pending',this)">Chờ duyệt</button>
       <button class="filter-btn" onclick="filterBookings('confirmed',this)">Đã xác nhận</button>
       <button class="filter-btn" onclick="filterBookings('rejected',this)">Từ chối</button>
     </div>
-
     <div class="admin-table-wrap">
       <table class="admin-table">
         <thead>
@@ -504,7 +543,13 @@
   </div>
 </div>
 
-<!-- Toast notification -->
+<!-- User info bar (when logged in) -->
+<div class="user-bar" id="userBar" style="display:none">
+  <span class="user-bar-name" id="userBarName"></span>
+  <button class="user-bar-logout" onclick="doLogout()">Đăng xuất</button>
+</div>
+
+<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script src="script.js"></script>

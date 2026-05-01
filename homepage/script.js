@@ -1,16 +1,15 @@
 /* =====================================================
    KÉP STUDIO — script.js
-   Modules:
-   1. Storage (local + Supabase-ready)
-   2. Cursor
-   3. Hero Slideshow
-   4. Scroll Reveal + 3D Tilt
-   5. Navigation
-   6. Marquee
-   7. Zone Lightbox
-   8. Calendar (mini + hourly timeline)
-   9. Booking Form (5 steps)
-   10. Admin Panel
+   1. Storage
+   2. Hero Slideshow
+   3. Scroll Reveal + 3D Tilt
+   4. Navigation
+   5. Marquee
+   6. Zone Lightbox
+   7. Calendar (mini + hourly timeline)
+   8. Booking Form (5 steps)
+   9. Admin Panel
+   10. Auth (Login / Register)
    11. Utilities
    ===================================================== */
 
@@ -18,17 +17,12 @@
 /* ================================================================
    1. STORAGE — Local fallback (Supabase-ready)
 ================================================================ */
-
-// bookings stored as array in localStorage
 let _bookings = JSON.parse(localStorage.getItem('kep_bookings') || '[]');
+let _users    = JSON.parse(localStorage.getItem('kep_users')    || '[]');
+let _currentUser = JSON.parse(localStorage.getItem('kep_current_user') || 'null');
 
-function getBookings() {
-  return _bookings;
-}
-
-function saveBookings() {
-  localStorage.setItem('kep_bookings', JSON.stringify(_bookings));
-}
+function getBookings() { return _bookings; }
+function saveBookings() { localStorage.setItem('kep_bookings', JSON.stringify(_bookings)); }
 
 function addBooking(data) {
   const entry = {
@@ -49,38 +43,7 @@ function updateBookingStatus(id, status) {
 
 
 /* ================================================================
-   2. CURSOR
-================================================================ */
-(function initCursor() {
-  const cursor    = document.getElementById('cursor');
-  const cursorDot = document.getElementById('cursorDot');
-  let mx = 0, my = 0, cx = 0, cy = 0;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursorDot.style.left = mx + 'px';
-    cursorDot.style.top  = my + 'px';
-  });
-
-  (function animCursor() {
-    cx += (mx - cx) * 0.12;
-    cy += (my - cy) * 0.12;
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-    requestAnimationFrame(animCursor);
-  })();
-
-  // Expand on interactive elements
-  const targets = 'a, button, select, input, textarea, .studio-card, .zone-card, .zone-radio, .equip-item, .cal-day, .slide-dot, .tz-tab';
-  document.querySelectorAll(targets).forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('expanded'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('expanded'));
-  });
-})();
-
-
-/* ================================================================
-   3. HERO SLIDESHOW
+   2. HERO SLIDESHOW
 ================================================================ */
 (function initSlideshow() {
   const slides   = document.querySelectorAll('.slide');
@@ -88,7 +51,6 @@ function updateBookingStatus(id, status) {
   let current = 0;
   let timer;
 
-  // Build dots
   slides.forEach((_, i) => {
     const d = document.createElement('div');
     d.className = 'slide-dot' + (i === 0 ? ' active' : '');
@@ -110,12 +72,9 @@ function updateBookingStatus(id, status) {
   }
 
   resetTimer();
-
-  // Expose for HTML buttons
   window.nextSlide = () => { goSlide(current + 1); resetTimer(); };
   window.prevSlide = () => { goSlide(current - 1); resetTimer(); };
 
-  // Pause on hover
   const hero = document.querySelector('.hero');
   hero.addEventListener('mouseenter', () => clearInterval(timer));
   hero.addEventListener('mouseleave', resetTimer);
@@ -123,15 +82,13 @@ function updateBookingStatus(id, status) {
 
 
 /* ================================================================
-   4. SCROLL REVEAL + 3D TILT
+   3. SCROLL REVEAL + 3D TILT
 ================================================================ */
 (function initReveal() {
   const els = document.querySelectorAll('.reveal-up');
-
   const obs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      // Stagger siblings
       const siblings = entry.target.parentElement.querySelectorAll('.reveal-up');
       siblings.forEach((sib, i) => {
         if (!sib.classList.contains('visible')) {
@@ -145,7 +102,6 @@ function updateBookingStatus(id, status) {
 
   els.forEach(el => obs.observe(el));
 
-  // Trigger hero immediately after load
   setTimeout(() => {
     document.querySelectorAll('.hero .reveal-up').forEach((el, i) => {
       setTimeout(() => el.classList.add('visible'), 300 + i * 150);
@@ -171,7 +127,7 @@ function updateBookingStatus(id, status) {
 
 
 /* ================================================================
-   5. NAVIGATION — smooth scroll + active highlight
+   4. NAVIGATION
 ================================================================ */
 (function initNav() {
   const links = document.querySelectorAll('.nav-link');
@@ -196,7 +152,7 @@ function updateBookingStatus(id, status) {
 
 
 /* ================================================================
-   6. MARQUEE — pause on hover
+   5. MARQUEE
 ================================================================ */
 (function initMarquee() {
   const mq = document.querySelector('.marquee-track');
@@ -207,16 +163,12 @@ function updateBookingStatus(id, status) {
 
 
 /* ================================================================
-   7. ZONE LIGHTBOX
+   6. ZONE LIGHTBOX
 ================================================================ */
 const ZONE_DATA = {
   O: {
     title: '"O" Zone — Lầu 1 (1F)',
-    images: [
-      'KepDaSpace/studio1.jpg',
-      'KepDaSpace/studio5.jpg',
-      'KepDaSpace/studio2.jpg',
-    ],
+    images: [], // empty — photos TBD
     info: `
       <strong>O Zone · 1F</strong><br>
       Sảnh chính rộng ~80m² với cột bê tông, ánh sáng tự nhiên cửa sổ vòm.<br>
@@ -226,11 +178,7 @@ const ZONE_DATA = {
   },
   C: {
     title: '"C" Zone — Lầu 2 (2F)',
-    images: [
-      'KepDaSpace/studio4.jpg',
-      'KepDaSpace/studio6.jpg',
-      'KepDaSpace/studio3.jpg',
-    ],
+    images: [],
     info: `
       <strong>C Zone · 2F</strong><br>
       Tầng thượng private, makeup 3 gương, phòng thay đồ, rèm lụa mờ.<br>
@@ -240,11 +188,7 @@ const ZONE_DATA = {
   },
   Full: {
     title: 'Full House — Toàn bộ 2 tầng',
-    images: [
-      'KepDaSpace/studio6.jpg',
-      'KepDaSpace/studio1.jpg',
-      'KepDaSpace/studio4.jpg',
-    ],
+    images: [],
     info: `
       <strong>Full House</strong><br>
       Thuê trọn 2 tầng cho production lớn, workshop, pop-up event hoặc buổi chụp thương mại.<br>
@@ -264,16 +208,25 @@ function openZoneLightbox(zone) {
   document.getElementById('lightboxInfo').innerHTML    = data.info;
 
   const grid = document.getElementById('lightboxGrid');
-  grid.innerHTML = data.images.map(src =>
-    `<div class="lb-img" style="background-image:url('${src}')"></div>`
-  ).join('');
+  if (data.images.length > 0) {
+    grid.innerHTML = data.images.map(src =>
+      `<div class="lb-img" style="background-image:url('${src}')"></div>`
+    ).join('');
+  } else {
+    // Empty state placeholder
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;
+                  min-height:160px;background:var(--ink);color:rgba(237,229,208,0.2);
+                  font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;">
+        Hình ảnh sẽ được cập nhật sớm
+      </div>`;
+  }
 
   openModal('zoneLightbox');
 }
 
 function bookFromLightbox() {
   closeModal('zoneLightbox');
-  // Pre-select zone in form
   const radioEl = document.querySelector(`input[name="zone"][value="${_lightboxZone}"]`);
   if (radioEl) { radioEl.checked = true; onZoneChange(); }
   document.getElementById('booking').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -284,26 +237,23 @@ window.bookFromLightbox = bookFromLightbox;
 
 
 /* ================================================================
-   8. CALENDAR
+   7. CALENDAR
 ================================================================ */
 const WEEKDAY_LABELS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 const MONTH_LABELS   = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6',
                         'Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
-const TIMELINE_START = 8;   // 08:00
-const TIMELINE_END   = 21;  // 21:00
+const TIMELINE_START = 8;
+const TIMELINE_END   = 21;
 
 let calDate        = new Date();
-let calSelectedDay = null;    // 'YYYY-MM-DD'
+let calSelectedDay = null;
 let timelineZone   = 'O';
-
-// ── Mini Calendar ──
 
 function renderCalendar() {
   const y = calDate.getFullYear();
   const m = calDate.getMonth();
   document.getElementById('calTitle').textContent = MONTH_LABELS[m] + ' ' + y;
 
-  // Weekday headers
   const wdEl = document.getElementById('calWeekdays');
   wdEl.innerHTML = WEEKDAY_LABELS.map(d => `<div class="wd">${d}</div>`).join('');
 
@@ -316,12 +266,10 @@ function renderCalendar() {
   const grid = document.getElementById('calDays');
   grid.innerHTML = '';
 
-  // Prev month tail
   for (let i = firstDay - 1; i >= 0; i--) {
     grid.appendChild(makeDayCell(prevMonthDays - i, true, false, [], null));
   }
 
-  // Current month days
   for (let day = 1; day <= daysInMonth; day++) {
     const dt      = new Date(y, m, day);
     const dateStr = toDateStr(dt);
@@ -339,9 +287,8 @@ function renderCalendar() {
     grid.appendChild(cell);
   }
 
-  // Next month head
-  const filled  = firstDay + daysInMonth;
-  const remain  = (7 - filled % 7) % 7;
+  const filled = firstDay + daysInMonth;
+  const remain = (7 - filled % 7) % 7;
   for (let i = 1; i <= remain; i++) {
     grid.appendChild(makeDayCell(i, true, false, [], null));
   }
@@ -369,21 +316,15 @@ function makeDayCell(dayNum, otherMonth, isToday, bookings, dateStr) {
     cell.appendChild(dots);
   }
 
-  if (dateStr) {
-    cell.onclick = () => selectDay(dateStr);
-  }
+  if (dateStr) cell.onclick = () => selectDay(dateStr);
   return cell;
 }
 
 function selectDay(dateStr) {
   calSelectedDay = dateStr;
-  // Update selected styling
   document.querySelectorAll('.cal-day.selected').forEach(c => c.classList.remove('selected'));
-  // Re-render calendar to apply selection
   renderCalendar();
-  // Pre-fill date in form
   document.getElementById('fDate').value = dateStr;
-  // Render timeline
   renderTimeline(dateStr);
 }
 
@@ -397,8 +338,6 @@ window.switchTimelineZone = function(zone, btn) {
   if (calSelectedDay) renderTimeline(calSelectedDay);
 };
 
-// ── Hourly Timeline ──
-
 function renderTimeline(dateStr) {
   const wrap     = document.getElementById('timelineWrap');
   const bookings = getBookings().filter(b =>
@@ -407,26 +346,18 @@ function renderTimeline(dateStr) {
     (b.zone === timelineZone || b.zone === 'Full' || timelineZone === 'Full')
   );
 
-  const hours    = TIMELINE_END - TIMELINE_START; // number of columns
+  const hours    = TIMELINE_END - TIMELINE_START;
   const colCount = hours;
-
-  // Build header row: zone label + hour labels
   let html = `<div class="tl-grid" style="--tl-cols:${colCount};">`;
 
-  // Hour header
   html += '<div class="tl-zone-label" style="font-size:.38rem;color:var(--warm-grey);">Giờ</div>';
   for (let h = TIMELINE_START; h < TIMELINE_END; h++) {
     html += `<div class="tl-hour-label">${h}h</div>`;
   }
 
-  // Zone rows
   const zonesToShow = timelineZone === 'Full' ? ['O', 'C'] : [timelineZone];
-
   zonesToShow.forEach(z => {
-    // Zone label
     html += `<div class="tl-zone-label">${z}</div>`;
-
-    // Build slot cells
     const zoneBookings = bookings.filter(b => b.zone === z || b.zone === 'Full');
 
     for (let h = TIMELINE_START; h < TIMELINE_END; h++) {
@@ -437,20 +368,16 @@ function renderTimeline(dateStr) {
       });
 
       if (booked) {
-        // Show booking block only at its start hour
         const bStart = parseInt((booked.startTime || '08:00').split(':')[0]);
         const bEnd   = parseInt((booked.endTime   || '10:00').split(':')[0]);
         const span   = bEnd - bStart;
-
         if (h === bStart) {
           const statusClass = booked.status === 'confirmed' ? 'booked-confirmed' : 'booked-pending';
           const label       = booked.status === 'confirmed' ? '✓ ' + (booked.name || '') : '⏳ ' + (booked.name || 'Pending');
-          html += `
-            <div class="tl-cell ${statusClass}"
-                 style="grid-column: span ${span}; position:relative;">
-              <div class="tl-block ${booked.status}" title="${label}">${label}</div>
-            </div>`;
-          h += span - 1; // skip merged hours (the for-loop will h++ so subtract 1)
+          html += `<div class="tl-cell ${statusClass}" style="grid-column: span ${span}; position:relative;">
+                     <div class="tl-block ${booked.status}" title="${label}">${label}</div>
+                   </div>`;
+          h += span - 1;
         }
       } else {
         html += '<div class="tl-cell"></div>';
@@ -460,7 +387,6 @@ function renderTimeline(dateStr) {
 
   html += '</div>';
 
-  // Date heading
   const dLabel = document.createElement('div');
   dLabel.style.cssText = 'font-family:var(--font-body);font-size:.56rem;letter-spacing:.14em;color:var(--warm-grey);margin-bottom:8px;text-transform:uppercase;';
   dLabel.textContent = formatDate(dateStr);
@@ -472,22 +398,18 @@ function renderTimeline(dateStr) {
 
 
 /* ================================================================
-   9. BOOKING FORM
+   8. BOOKING FORM
 ================================================================ */
 let currentStep = 1;
-let selectedEquip = {}; // { key: price }
+let selectedEquip = {};
 
-// ── Step navigation ──
 function goStep(n) {
   if (n > currentStep && !validateStep(currentStep)) return;
-
   document.getElementById('fs' + currentStep).classList.remove('active');
   markStep(currentStep, 'done');
-
   currentStep = n;
   document.getElementById('fs' + currentStep).classList.add('active');
   markStep(currentStep, 'active');
-
   if (n === 5) renderSummary();
 }
 
@@ -533,16 +455,10 @@ function validateStep(n) {
   return true;
 }
 
-// ── Event handlers ──
-function onZoneChange() {
-  checkConflict();
-  updateDurationInfo();
-}
-
+function onZoneChange() { checkConflict(); updateDurationInfo(); }
 function onDateChange() {
   const dateStr = document.getElementById('fDate').value;
   if (dateStr) {
-    // Sync calendar selection
     calSelectedDay = dateStr;
     const d = new Date(dateStr);
     calDate  = new Date(d.getFullYear(), d.getMonth(), 1);
@@ -551,11 +467,7 @@ function onDateChange() {
   }
   checkConflict();
 }
-
-function onTimeChange() {
-  updateDurationInfo();
-  checkConflict();
-}
+function onTimeChange() { updateDurationInfo(); checkConflict(); }
 
 function updateDurationInfo() {
   const zone  = getSelectedZone();
@@ -564,7 +476,6 @@ function updateDurationInfo() {
   const info  = document.getElementById('durationInfo');
 
   if (!start || !end || !zone) { info.style.display = 'none'; return; }
-
   const sh    = parseInt(start);
   const eh    = parseInt(end);
   const hours = eh - sh;
@@ -572,7 +483,6 @@ function updateDurationInfo() {
 
   const total = calcPrice(zone, hours);
   const priceStr = zone === 'Full' ? 'Liên hệ báo giá' : total.toLocaleString() + 'K';
-
   info.style.display = 'block';
   info.innerHTML = `
     Thời gian: <strong>${start} — ${end}</strong> (${hours} giờ)&nbsp;&nbsp;·&nbsp;&nbsp;
@@ -594,10 +504,8 @@ function checkConflict() {
   const hasConflict = getBookings().some(b => {
     if (b.status === 'rejected') return false;
     if (b.date !== date) return false;
-    // Check zone overlap (Full House blocks everything)
     const zoneMatch = b.zone === zone || b.zone === 'Full' || zone === 'Full';
     if (!zoneMatch) return false;
-    // Time overlap check: existing.start < new.end && existing.end > new.start
     const bs = parseInt((b.startTime || '08:00').split(':')[0]);
     const be = parseInt((b.endTime   || '10:00').split(':')[0]);
     return sh < be && eh > bs;
@@ -606,10 +514,7 @@ function checkConflict() {
   warn.style.display = hasConflict ? 'block' : 'none';
 }
 
-function toggleTag(btn) {
-  btn.classList.toggle('active');
-}
-
+function toggleTag(btn)   { btn.classList.toggle('active'); }
 function toggleEquip(el) {
   const key   = el.dataset.key;
   const price = parseInt(el.dataset.price);
@@ -618,9 +523,8 @@ function toggleEquip(el) {
   else delete selectedEquip[key];
 }
 
-// ── Pricing ──
-const BASE_PRICES = { O: 600, C: 500, Full: 0 };   // for first 2h
-const ADD_PRICES  = { O: 250, C: 200, Full: 0 };    // per extra hour
+const BASE_PRICES = { O: 600, C: 500, Full: 0 };
+const ADD_PRICES  = { O: 250, C: 200, Full: 0 };
 
 function calcPrice(zone, hours) {
   if (!zone || zone === 'Full') return 0;
@@ -631,7 +535,6 @@ function calcPrice(zone, hours) {
   return base + addH * addRate + equip;
 }
 
-// ── Summary (Step 5) ──
 function renderSummary() {
   const zone     = getSelectedZone();
   const date     = document.getElementById('fDate').value;
@@ -645,7 +548,6 @@ function renderSummary() {
   const hours    = end && start ? parseInt(end) - parseInt(start) : 0;
   const total    = calcPrice(zone, hours);
   const deposit  = Math.round(total / 2);
-
   const zoneLabel = { O: '"O" Zone · 1F', C: '"C" Zone · 2F', Full: 'Full House' }[zone] || zone;
 
   document.getElementById('summaryBox').innerHTML = `
@@ -668,7 +570,6 @@ function renderSummary() {
   `;
 }
 
-// ── Submit ──
 function submitBooking() {
   const zone  = getSelectedZone();
   const date  = document.getElementById('fDate').value;
@@ -695,27 +596,21 @@ function submitBooking() {
     total, deposit
   });
 
-  // Refresh calendar to show new booking
   renderCalendar();
   if (calSelectedDay === date) renderTimeline(date);
-
-  // Show QR payment modal
   showQRModal(booking);
-
-  // Reset form
   resetForm();
 }
 
 function showQRModal(booking) {
-  const amount    = booking.zone === 'Full' ? 'Liên hệ' : (booking.deposit || 0).toLocaleString() + 'K';
-  const content   = `KEP ${booking.id}`;
-  const qrData    = encodeURIComponent(`MOMO:0xxx-${content}-${amount}`);
-  const qrUrl     = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${qrData}`;
+  const amount  = booking.zone === 'Full' ? 'Liên hệ' : (booking.deposit || 0).toLocaleString() + 'K';
+  const content = `KEP ${booking.id}`;
+  const qrData  = encodeURIComponent(`MOMO:0xxx-${content}-${amount}`);
+  const qrUrl   = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${qrData}`;
 
-  document.getElementById('qrImg').src      = qrUrl;
-  document.getElementById('qrAmount').textContent  = amount;
-  document.getElementById('qrContent').textContent = content;
-
+  document.getElementById('qrImg').src               = qrUrl;
+  document.getElementById('qrAmount').textContent    = amount;
+  document.getElementById('qrContent').textContent   = content;
   openModal('qrModal');
 }
 
@@ -724,7 +619,6 @@ function resetForm() {
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('fs1').classList.add('active');
   [1,2,3,4,5].forEach(n => { markStep(n, n === 1 ? 'active' : ''); });
-
   document.querySelectorAll('input[name="zone"]').forEach(r => r.checked = false);
   document.getElementById('fDate').value  = '';
   document.getElementById('fStart').value = '';
@@ -739,18 +633,17 @@ function resetForm() {
   document.getElementById('conflictWarn').style.display  = 'none';
 }
 
-// ── Expose to HTML ──
-window.goStep     = goStep;
+window.goStep        = goStep;
 window.onZoneChange  = onZoneChange;
 window.onDateChange  = onDateChange;
 window.onTimeChange  = onTimeChange;
-window.toggleTag  = toggleTag;
-window.toggleEquip = toggleEquip;
+window.toggleTag     = toggleTag;
+window.toggleEquip   = toggleEquip;
 window.submitBooking = submitBooking;
 
 
 /* ================================================================
-   10. ADMIN PANEL
+   9. ADMIN PANEL
 ================================================================ */
 const ADMIN_PASSWORD = 'kep2025';
 let adminFilter = 'all';
@@ -782,8 +675,6 @@ function closeAdmin() {
 
 function renderAdmin() {
   const all = getBookings();
-
-  // Stats
   const counts = {
     pending:   all.filter(b => b.status === 'pending').length,
     confirmed: all.filter(b => b.status === 'confirmed').length,
@@ -797,7 +688,6 @@ function renderAdmin() {
     <div class="stat-card"><div class="stat-lbl">Từ chối</div><div class="stat-val">${counts.rejected}</div></div>
     <div class="stat-card"><div class="stat-lbl">Doanh thu</div><div class="stat-val">${counts.revenue.toLocaleString()}K</div></div>
   `;
-
   renderAdminTable(all);
 }
 
@@ -809,7 +699,7 @@ function filterBookings(f, btn) {
 }
 
 function renderAdminTable(all) {
-  const rows = adminFilter === 'all' ? all : all.filter(b => b.status === adminFilter);
+  const rows  = adminFilter === 'all' ? all : all.filter(b => b.status === adminFilter);
   const tbody = document.getElementById('adminTbody');
 
   if (!rows.length) {
@@ -849,35 +739,150 @@ function statusLabel(s) {
   return { pending: 'Chờ duyệt', confirmed: 'Đã xác nhận', rejected: 'Từ chối' }[s] || s;
 }
 
-// Expose to HTML
-window.openLogin       = openLogin;
-window.tryLogin        = tryLogin;
-window.closeAdmin      = closeAdmin;
-window.filterBookings  = filterBookings;
-window.actBooking      = actBooking;
+window.openLogin      = openLogin;
+window.tryLogin       = tryLogin;
+window.closeAdmin     = closeAdmin;
+window.filterBookings = filterBookings;
+window.actBooking     = actBooking;
+
+
+/* ================================================================
+   10. AUTH — Guest Login / Register
+================================================================ */
+
+function openAuthModal(tab) {
+  switchAuthTab(tab || 'login');
+  openModal('authModal');
+}
+
+function switchAuthTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('tabLogin').classList.toggle('active', isLogin);
+  document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+  document.getElementById('authFormLogin').style.display    = isLogin ? 'block' : 'none';
+  document.getElementById('authFormRegister').style.display = isLogin ? 'none' : 'block';
+}
+
+function doLogin() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl    = document.getElementById('authLoginError');
+
+  if (!email || !password) {
+    errEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
+    errEl.style.display = 'block'; return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
+  const user  = users.find(u => u.email === email && u.password === btoa(password));
+
+  if (!user) {
+    errEl.textContent = 'Email hoặc mật khẩu không đúng.';
+    errEl.style.display = 'block'; return;
+  }
+
+  errEl.style.display = 'none';
+  setCurrentUser(user);
+  closeModal('authModal');
+  showToast('✓ Đăng nhập thành công. Chào ' + user.name + '!');
+  document.getElementById('loginEmail').value    = '';
+  document.getElementById('loginPassword').value = '';
+}
+
+function doRegister() {
+  const name     = document.getElementById('regName').value.trim();
+  const phone    = document.getElementById('regPhone').value.trim();
+  const email    = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const errEl    = document.getElementById('authRegError');
+
+  if (!name || !phone || !email || !password) {
+    errEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
+    errEl.style.display = 'block'; return;
+  }
+  if (password.length < 6) {
+    errEl.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.';
+    errEl.style.display = 'block'; return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
+  if (users.find(u => u.email === email)) {
+    errEl.textContent = 'Email này đã được đăng ký.';
+    errEl.style.display = 'block'; return;
+  }
+
+  const newUser = { id: 'U-' + Date.now(), name, phone, email, password: btoa(password) };
+  users.push(newUser);
+  localStorage.setItem('kep_users', JSON.stringify(users));
+
+  errEl.style.display = 'none';
+  setCurrentUser(newUser);
+  closeModal('authModal');
+  showToast('✓ Đăng ký thành công. Chào mừng, ' + name + '!');
+  document.getElementById('regName').value     = '';
+  document.getElementById('regPhone').value    = '';
+  document.getElementById('regEmail').value    = '';
+  document.getElementById('regPassword').value = '';
+}
+
+function setCurrentUser(user) {
+  _currentUser = user;
+  localStorage.setItem('kep_current_user', JSON.stringify(user));
+  updateUserUI();
+}
+
+function doLogout() {
+  _currentUser = null;
+  localStorage.removeItem('kep_current_user');
+  updateUserUI();
+  showToast('Đã đăng xuất.');
+}
+
+function updateUserUI() {
+  const bar    = document.getElementById('userBar');
+  const nameEl = document.getElementById('userBarName');
+  const userBtn = document.querySelector('.user-btn .admin-label');
+
+  if (_currentUser) {
+    bar.style.display = 'flex';
+    if (nameEl) nameEl.textContent = _currentUser.name;
+    if (userBtn) userBtn.textContent = ' ' + _currentUser.name;
+    // Pre-fill booking form with user info
+    const fName  = document.getElementById('fName');
+    const fPhone = document.getElementById('fPhone');
+    if (fName && !fName.value)  fName.value  = _currentUser.name;
+    if (fPhone && !fPhone.value) fPhone.value = _currentUser.phone;
+  } else {
+    bar.style.display = 'none';
+    if (userBtn) userBtn.textContent = ' Đăng nhập';
+  }
+}
+
+window.openAuthModal  = openAuthModal;
+window.switchAuthTab  = switchAuthTab;
+window.doLogin        = doLogin;
+window.doRegister     = doRegister;
+window.doLogout       = doLogout;
+
+// Init user UI on load
+updateUserUI();
 
 
 /* ================================================================
    11. UTILITIES
 ================================================================ */
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
-// Modal open/close
-function openModal(id) {
-  document.getElementById(id).classList.add('show');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('show');
-}
-// Close modal when clicking overlay
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('show');
   });
 });
+
 window.openModal  = openModal;
 window.closeModal = closeModal;
 
-// Toast
 function showToast(msg, dur = 3000) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -885,7 +890,6 @@ function showToast(msg, dur = 3000) {
   setTimeout(() => t.classList.remove('show'), dur);
 }
 
-// Date helpers
 function toDateStr(d) {
   return d.getFullYear() + '-' +
     String(d.getMonth() + 1).padStart(2, '0') + '-' +
